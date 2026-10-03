@@ -48,7 +48,7 @@ h1 { font-size: 20px; margin: 0; }
 .wedge { fill: var(--accent); }
 .tick { stroke: #222; stroke-width: 1; }
 .tick.major { stroke-width: 3.2; }
-.num { font-size: 15px; font-weight: 500; fill: #222; font-family: Helvetica, Arial, sans-serif; }
+.num { font-size: 5px; font-weight: 500; fill: #222; font-family: Helvetica, Arial, sans-serif; }
 .arrow { font-size: 14px; fill: #222; }
 .knob { fill: #fbfbfb; stroke: #d4d0c8; stroke-width: 1.5; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
 .led { position: absolute; top: 9%; right: 9%; width: 4%; aspect-ratio: 1; border-radius: 50%; background: #c8c8c8; }
@@ -59,11 +59,23 @@ h1 { font-size: 20px; margin: 0; }
 .sub { width: 52px; height: 52px; border-radius: 50%; background: var(--card); font-size: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
 .sub-text { color: var(--muted); padding: 12px 8px; }
 
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: #fff;
+  animation: flash-blink 0.5s steps(1, end) 6;
+}
+@keyframes flash-blink {
+  0% { background: #fff; }
+  50% { background: var(--accent); }
+}
+
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: flex; align-items: flex-end; justify-content: center; z-index: 10; }
 .sheet { background: var(--card); width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 20px 20px max(20px, env(safe-area-inset-bottom)); }
 .sheet h2 { margin: 0 0 8px; font-size: 18px; }
 .row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,.06); }
-.row input[type="number"] { width: 72px; font-size: 16px; padding: 8px; border: 1px solid rgba(0,0,0,.15); border-radius: 8px; text-align: right; }
+.row input[type="text"] { width: 72px; font-size: 16px; padding: 8px; border: 1px solid rgba(0,0,0,.15); border-radius: 8px; text-align: right; }
 .row input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent); }
 .sheet-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
 .sheet-actions .main { padding: 12px 28px; min-width: 0; font-size: 16px; }

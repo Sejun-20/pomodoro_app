@@ -45,6 +45,7 @@ export default function App() {
   );
   const [now, setNow] = useState(Date.now());
   const [showSettings, setShowSettings] = useState(false);
+  const [flashing, setFlashing] = useState(false);
   const wakeLock = useRef<WakeLockSentinel | null>(null);
 
   const remaining = timer.running && timer.endAt ? Math.max(0, timer.endAt - now) : timer.remaining;
@@ -59,12 +60,12 @@ export default function App() {
     return () => clearInterval(id);
   }, [timer.running]);
 
-  // 종료: 0에서 멈춘 채 대기. 휴식이 끝났을 때만 진동. 다음 단계로 자동 전환/시작하지 않는다.
+  // 종료: 0에서 멈춘 채 대기. 휴식이 끝났을 때만 화면 깜빡임. 다음 단계로 자동 전환/시작하지 않는다.
   useEffect(() => {
     if (!timer.running || !timer.endAt || timer.endAt > now) return;
     setTimer((t) => ({ ...t, running: false, endAt: null, remaining: 0 }));
-    if (timer.mode !== "focus" && settings.vibrate) navigator.vibrate?.([300, 150, 300, 150, 300]);
-  }, [now, timer.running, timer.endAt, timer.mode, settings.vibrate]);
+    if (timer.mode !== "focus" && settings.flash) setFlashing(true);
+  }, [now, timer.running, timer.endAt, timer.mode, settings.flash]);
 
   // 실행 중에는 화면이 꺼지지 않게 한다.
   useEffect(() => {
@@ -139,7 +140,7 @@ export default function App() {
           {wedge(remaining)}
           {Array.from({ length: 60 }, (_, i) => {
             const major = i % 5 === 0;
-            const [x1, y1] = polar(major ? 72 : 96, i * 6);
+            const [x1, y1] = polar(major ? 88 : 96, i * 6);
             const [x2, y2] = polar(104, i * 6);
             return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className={major ? "tick major" : "tick"} />;
           })}
@@ -168,10 +169,46 @@ export default function App() {
         </button>
       </div>
 
+      {flashing && (
+        <div
+          className="flash"
+          role="alert"
+          aria-label="휴식 종료"
+          onAnimationEnd={() => setFlashing(false)}
+          onClick={() => setFlashing(false)}
+        />
+      )}
+
       {showSettings && (
         <SettingsSheet settings={settings} onChange={applySettings} onClose={() => setShowSettings(false)} />
       )}
     </main>
+  );
+}
+
+/** 입력 중에는 빈 칸을 허용하고, 입력창을 벗어날 때 1~60으로 확정한다. */
+function MinutesInput({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const [draft, setDraft] = useState(String(value));
+
+  useEffect(() => {
+    setDraft((d) => (Math.min(MAX_MINUTES, parseInt(d, 10) || 0) === value ? d : String(value)));
+  }, [value]);
+
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      value={draft}
+      onFocus={(e) => e.target.select()}
+      onChange={(e) => {
+        const text = e.target.value.replace(/\D/g, "").slice(0, 3);
+        setDraft(text);
+        const n = parseInt(text, 10);
+        if (n >= 1) onChange(Math.min(MAX_MINUTES, n));
+      }}
+      onBlur={() => setDraft(String(value))}
+    />
   );
 }
 
@@ -187,17 +224,7 @@ function SettingsSheet({
   const num = (key: "focus" | "short" | "long", label: string) => (
     <label className="row">
       <span>{label}</span>
-      <input
-        type="number"
-        inputMode="numeric"
-        min={1}
-        max={MAX_MINUTES}
-        value={settings[key]}
-        onChange={(e) => {
-          const v = Math.min(MAX_MINUTES, Math.max(1, Math.floor(Number(e.target.value)) || 1));
-          onChange({ ...settings, [key]: v });
-        }}
-      />
+      <MinutesInput value={settings[key]} onChange={(v) => onChange({ ...settings, [key]: v })} />
     </label>
   );
   return (
@@ -208,11 +235,11 @@ function SettingsSheet({
         {num("short", "짧은 휴식 (분)")}
         {num("long", "긴 휴식 (분)")}
         <label className="row">
-          <span>휴식 종료 진동</span>
+          <span>휴식 종료 깜빡임</span>
           <input
             type="checkbox"
-            checked={settings.vibrate}
-            onChange={(e) => onChange({ ...settings, vibrate: e.target.checked })}
+            checked={settings.flash}
+            onChange={(e) => onChange({ ...settings, flash: e.target.checked })}
           />
         </label>
         <div className="sheet-actions">
