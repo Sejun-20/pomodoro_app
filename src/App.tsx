@@ -142,10 +142,13 @@ export default function App() {
           <circle cx={CX} cy={CY} r={DISK} className="disk" />
           {wedge(remaining)}
           {Array.from({ length: 60 }, (_, i) => {
-            const major = i % 5 === 0;
-            const [x1, y1] = polar(major ? 88 : 96, i * 6);
+            if (i % 5 !== 0) {
+              const [x, y] = polar(100, i * 6);
+              return <circle key={i} cx={x} cy={y} r="1.5" className="dot" />;
+            }
+            const [x1, y1] = polar(96, i * 6);
             const [x2, y2] = polar(104, i * 6);
-            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className={major ? "tick major" : "tick"} />;
+            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className="tick major" />;
           })}
           {labels.map((n) => {
             const [x, y] = polar(125, n * 6);
