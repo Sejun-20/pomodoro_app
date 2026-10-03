@@ -119,7 +119,10 @@ export default function App() {
   return (
     <main className="app" style={{ "--accent": COLOR[timer.mode] } as React.CSSProperties}>
       <header>
-        <h1>🍅 뽀모도로</h1>
+        <h1>
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="logo" />
+          뽀모도로
+        </h1>
         <button className="icon" aria-label="설정" onClick={() => setShowSettings(true)}>
           ⚙️
         </button>
@@ -156,7 +159,6 @@ export default function App() {
             →
           </text>
           <circle cx={CX} cy={CY} r="24" className="knob" />
-          <rect x="116" y="143" width="68" height="14" rx="7" className="knob" />
         </svg>
       </section>
 

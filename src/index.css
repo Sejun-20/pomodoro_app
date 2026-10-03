@@ -27,7 +27,8 @@ button { font: inherit; border: 0; cursor: pointer; color: inherit; background: 
   gap: 24px;
 }
 header { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-h1 { font-size: 20px; margin: 0; }
+h1 { font-size: 20px; margin: 0; display: flex; align-items: center; gap: 8px; }
+.logo { width: 28px; height: 28px; border-radius: 7px; }
 .icon { font-size: 22px; padding: 6px; }
 
 .tabs { display: flex; gap: 6px; background: rgba(0,0,0,.05); padding: 4px; border-radius: 999px; width: 100%; }
