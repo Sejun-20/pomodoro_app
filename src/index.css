@@ -48,7 +48,7 @@ h1 { font-size: 20px; margin: 0; display: flex; align-items: center; gap: 8px; }
 .disk { fill: #fff; }
 .wedge { fill: var(--accent); }
 .dot { fill: #222; }
-.tick.major { stroke: #222; stroke-width: 6.4; }
+.tick.major { stroke: #222; stroke-width: 3; }
 .num { font-size: 10px; font-weight: 500; fill: #222; font-family: Helvetica, Arial, sans-serif; }
 .arrow { font-size: 14px; fill: #222; }
 .knob { fill: #fbfbfb; stroke: #d4d0c8; stroke-width: 1.5; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
