@@ -158,9 +158,6 @@ export default function App() {
               </text>
             );
           })}
-          <text x="170" y="26" className="arrow" textAnchor="middle" dominantBaseline="central">
-            →
-          </text>
           <circle cx={CX} cy={CY} r="24" className="knob" />
         </svg>
       </section>

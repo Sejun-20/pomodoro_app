@@ -50,7 +50,6 @@ h1 { font-size: 20px; margin: 0; display: flex; align-items: center; gap: 8px; }
 .dot { fill: #222; }
 .tick.major { stroke: #222; stroke-width: 2; }
 .num { font-size: 10px; font-weight: 500; fill: #222; font-family: Helvetica, Arial, sans-serif; }
-.arrow { font-size: 14px; fill: #222; }
 .knob { fill: #fbfbfb; stroke: #d4d0c8; stroke-width: 1.5; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
 .led { position: absolute; top: 9%; right: 9%; width: 4%; aspect-ratio: 1; border-radius: 50%; background: #c8c8c8; }
 .led.on { background: #26d44a; box-shadow: 0 0 6px #26d44a; }
